@@ -21,6 +21,12 @@ class WeatherRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getWeatherById(id: String): Flow<Weather?> {
+        return localDataSource.getWeatherById(id).map { entity ->
+            entity?.toDomain()
+        }
+    }
+
     override suspend fun refreshWeather(
         latitude: Double,
         longitude: Double,
@@ -40,7 +46,6 @@ class WeatherRepositoryImpl @Inject constructor(
                 icon = daily.weather.firstOrNull()?.icon.orEmpty()
             )
         }
-
         localDataSource.deleteAllWeather()
         localDataSource.saveWeather(weatherEntities)
     }

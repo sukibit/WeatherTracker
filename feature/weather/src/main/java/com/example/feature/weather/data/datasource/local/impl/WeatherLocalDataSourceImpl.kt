@@ -14,6 +14,10 @@ class WeatherLocalDataSourceImpl @Inject constructor(
         return weatherDao.getAllWeather()
     }
 
+    override fun getWeatherById(id: String): Flow<WeatherEntity?> {
+        return weatherDao.getWeatherById(id)
+    }
+
     override suspend fun saveWeather(weather: List<WeatherEntity>) {
         weatherDao.insertWeather(weather)
     }

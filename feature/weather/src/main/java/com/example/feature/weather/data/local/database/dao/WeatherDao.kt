@@ -12,6 +12,9 @@ interface WeatherDao {
     @Query("SELECT * FROM weather ORDER BY date ASC")
     fun getAllWeather(): Flow<List<WeatherEntity>>
 
+    @Query("SELECT * FROM weather WHERE id = :id")
+    fun getWeatherById(id: String): Flow<WeatherEntity?>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWeather(weather: List<WeatherEntity>)
 

@@ -1,6 +1,7 @@
 package com.example.feature.weather.domain.di
 
 import com.example.feature.weather.domain.repository.WeatherRepository
+import com.example.feature.weather.domain.usecase.GetWeatherDetailUseCase
 import com.example.feature.weather.domain.usecase.GetWeatherForecastUseCase
 import com.example.feature.weather.domain.usecase.RefreshWeatherUseCase
 import dagger.Module
@@ -27,5 +28,13 @@ object UseCaseModule {
         repository: WeatherRepository
     ): RefreshWeatherUseCase {
         return RefreshWeatherUseCase(repository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetWeatherDetailUseCase(
+        repository: WeatherRepository
+    ): GetWeatherDetailUseCase {
+        return GetWeatherDetailUseCase(repository)
     }
 }
