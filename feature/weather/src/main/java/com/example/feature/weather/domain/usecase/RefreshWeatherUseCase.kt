@@ -1,6 +1,6 @@
 package com.example.feature.weather.domain.usecase
 
-import com.example.feature.weather.domain.BaseSuspendUseCase
+import com.example.core.usecase.BaseSuspendUseCase
 import com.example.feature.weather.domain.model.RefreshWeatherParams
 import com.example.feature.weather.domain.repository.WeatherRepository
 import javax.inject.Inject

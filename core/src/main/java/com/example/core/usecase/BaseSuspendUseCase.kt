@@ -1,4 +1,4 @@
-package com.example.feature.weather.domain
+package com.example.core.usecase
 
 abstract class BaseSuspendUseCase<out T, in Params> {
     protected abstract suspend fun execute(params: Params): T

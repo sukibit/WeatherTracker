@@ -1,6 +1,6 @@
 package com.example.feature.weather.domain.usecase
 
-import com.example.feature.weather.domain.BaseFlowUseCase
+import com.example.core.usecase.BaseFlowUseCase
 import com.example.feature.weather.domain.model.Weather
 import com.example.feature.weather.domain.repository.WeatherRepository
 import kotlinx.coroutines.flow.Flow

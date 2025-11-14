@@ -1,5 +1,6 @@
 package com.example.core.di
 
+import com.example.core.data.WeatherConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +16,7 @@ object CoreModule {
     @Provides
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.openweathermap.org/")
+            .baseUrl(WeatherConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
