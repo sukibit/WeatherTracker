@@ -65,42 +65,33 @@ fun WeatherDetailScreen(
         }
     }
 
-    WeatherDetailContent(
-        state = state,
-        onEventSend = { event -> viewModel.handleEvent(event) }
-    )
+    WeatherDetailContent(state = state, onEventSend = { event -> viewModel.handleEvent(event) })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherDetailContent(
-    state: WeatherDetailContract.State,
-    onEventSend: (WeatherDetailContract.Event) -> Unit
+    state: WeatherDetailContract.State, onEventSend: (WeatherDetailContract.Event) -> Unit
 ) {
-    Scaffold(
-        topBar = {
-            Column {
-                TopAppBar(
-                    title = { Text(stringResource(R.string.weather_details_title)) },
-                    navigationIcon = {
-                        IconButton(onClick = {
-                            onEventSend(WeatherDetailContract.Event.OnBackClicked)
-                        }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.back_button_description)
-                            )
-                        }
-                    })
-                if (state.showError) {
-                    ErrorBannerInTopBar(
-                        message = state.errorMessage,
-                        onDismiss = { onEventSend(WeatherDetailContract.Event.OnErrorDismissed) }
-                    )
-                }
+    Scaffold(topBar = {
+        Column {
+            TopAppBar(title = { Text(stringResource(R.string.weather_details_title)) },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        onEventSend(WeatherDetailContract.Event.OnBackClicked)
+                    }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back_button_description)
+                        )
+                    }
+                })
+            if (state.showError) {
+                ErrorBannerInTopBar(message = state.errorMessage,
+                    onDismiss = { onEventSend(WeatherDetailContract.Event.OnErrorDismissed) })
             }
         }
-    ) { paddingValues ->
+    }) { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -117,8 +108,7 @@ fun WeatherDetailContent(
 
 @Composable
 fun WeatherDetailBody(
-    weather: WeatherUi,
-    iconContent: @Composable () -> Unit = {
+    weather: WeatherUi, iconContent: @Composable () -> Unit = {
         AsyncImage(
             model = weather.iconUrl,
             contentDescription = stringResource(R.string.weather_icon_description),
@@ -142,8 +132,7 @@ fun WeatherDetailBody(
         WeatherIconCard(weather = weather, iconContent = iconContent)
 
         DetailCard(
-            title = stringResource(R.string.temperature_section_title),
-            items = listOf(
+            title = stringResource(R.string.temperature_section_title), items = listOf(
                 stringResource(R.string.temperature_day_label) to weather.tempDay,
                 stringResource(R.string.temperature_min_label) to weather.tempMin,
                 stringResource(R.string.temperature_max_label) to weather.tempMax
@@ -151,8 +140,7 @@ fun WeatherDetailBody(
         )
 
         DetailCard(
-            title = stringResource(R.string.conditions_section_title),
-            items = listOf(
+            title = stringResource(R.string.conditions_section_title), items = listOf(
                 stringResource(R.string.humidity_label) to weather.humidity,
                 stringResource(R.string.wind_label) to weather.windSpeed
             )
@@ -164,11 +152,13 @@ fun WeatherDetailBody(
 fun WeatherIconCard(
     weather: WeatherUi,
     iconContent: @Composable () -> Unit = {
-        AsyncImage(
-            model = weather.iconUrl,
-            contentDescription = stringResource(R.string.weather_icon_description),
-            modifier = Modifier.size(Dimens.IconXXLarge)
-        )
+        if (weather.iconUrl.isNotEmpty()) {
+            AsyncImage(
+                model = weather.iconUrl,
+                contentDescription = stringResource(R.string.weather_icon_description),
+                modifier = Modifier.size(Dimens.IconXXLarge)
+            )
+        }
     }
 ) {
     Column(
@@ -209,8 +199,7 @@ fun WeatherIconCard(
 @Composable
 fun EmptyStateWeatherDetailView() {
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
         Text(stringResource(R.string.weather_details_not_found))
     }

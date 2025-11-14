@@ -31,32 +31,31 @@ import com.example.feature.weather.presentation.model.WeatherUi
 
 @Composable
 fun WeatherCard(
-    weather: WeatherUi,
-    onClick: () -> Unit,
+    weather: WeatherUi, onClick: () -> Unit,
     iconContent: @Composable () -> Unit = {
-        AsyncImage(
-            model = weather.iconUrl,
-            contentDescription = stringResource(R.string.weather_icon_description),
-            modifier = Modifier.size(Dimens.IconLarge),
-            contentScale = ContentScale.Fit
-        )
+        if (weather.iconUrl.isNotEmpty()) {
+            AsyncImage(
+                model = weather.iconUrl,
+                contentDescription = stringResource(R.string.weather_icon_description),
+                modifier = Modifier.size(Dimens.IconLarge),
+                contentScale = ContentScale.Fit
+            )
+        }
     }
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(Dimens.RadiusMedium))
-            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
-            .border(
-                width = Dimens.BorderThin,
-                color = MaterialTheme.colorScheme.surfaceVariant,
-                shape = RoundedCornerShape(Dimens.RadiusMedium)
-            )
-            .pointerInput(Unit) {
-                detectTapGestures(onTap = { onClick() })
-            }
-            .padding(Dimens.PaddingMedium)
-    ) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .clip(RoundedCornerShape(Dimens.RadiusMedium))
+        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+        .border(
+            width = Dimens.BorderThin,
+            color = MaterialTheme.colorScheme.surfaceVariant,
+            shape = RoundedCornerShape(Dimens.RadiusMedium)
+        )
+        .pointerInput(Unit) {
+            detectTapGestures(onTap = { onClick() })
+        }
+        .padding(Dimens.PaddingMedium)) {
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -126,8 +125,7 @@ fun WeatherCard(
         Spacer(modifier = Modifier.height(Dimens.SpaceSmall))
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
         ) {
             WeatherInfoChip(
                 label = stringResource(R.string.humidity_label),
@@ -146,16 +144,13 @@ fun WeatherCard(
 
 @Composable
 private fun WeatherInfoChip(
-    label: String,
-    value: String,
-    modifier: Modifier = Modifier
+    label: String, value: String, modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(Dimens.RadiusSmall))
             .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.5f))
-            .padding(Dimens.PaddingXSmall),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(Dimens.PaddingXSmall), horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Text(
