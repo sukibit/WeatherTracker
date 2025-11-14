@@ -38,10 +38,11 @@ fun WeatherListScreen(
 
     LaunchedEffect(Unit) {
         viewModel.handleEvent(WeatherListContract.Event.OnInit)
-        effect.collectLatest { effect ->
-            when (effect) {
+
+        effect.collectLatest { navigationEffect ->
+            when (navigationEffect) {
                 is WeatherListContract.Effect.NavigateToDetail -> {
-                    navController.navigate("weather_detail/${effect.weatherId}")
+                    navController.navigate("weather_detail/${navigationEffect.weatherId}")
                 }
             }
         }

@@ -9,8 +9,6 @@ import com.example.feature.weather.domain.usecase.RefreshWeatherUseCase
 import com.example.feature.weather.presentation.contract.WeatherListContract
 import com.example.feature.weather.presentation.model.WeatherUiMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +21,6 @@ class WeatherListViewModel @Inject constructor(
     private companion object {
         const val MADRID_LAT = 40.4983
         const val MADRID_LON = -3.5676
-        const val REFRESH_INTERVAL_MS = 30000L
     }
 
     private var isInitialized = false
@@ -37,7 +34,6 @@ class WeatherListViewModel @Inject constructor(
                     isInitialized = true
                     observeWeatherData()
                     refreshWeather()
-                    startAutoRefresh()
                 }
             }
 
@@ -102,17 +98,6 @@ class WeatherListViewModel @Inject constructor(
                     }
                 }
             )
-        }
-    }
-
-    private fun startAutoRefresh() {
-        viewModelScope.launch {
-            while (isActive) {
-                delay(REFRESH_INTERVAL_MS)
-                if (isActive) {
-                    refreshWeather()
-                }
-            }
         }
     }
 }
