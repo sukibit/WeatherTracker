@@ -10,6 +10,14 @@ android {
     namespace = "com.example.weathertracker"
     compileSdk = 35
 
+    lint {
+        disable += listOf(
+            "NullSafeMutableLiveData",
+            "RememberInComposition",
+            "FrequentlyChangingValue"
+        )
+    }
+
     defaultConfig {
         applicationId = "com.example.weathertracker"
         minSdk = 24

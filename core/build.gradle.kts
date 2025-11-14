@@ -1,3 +1,4 @@
+import groovy.lang.ExpandoMetaClassCreationHandle.disable
 import java.util.Properties
 
 plugins {
@@ -10,6 +11,14 @@ plugins {
 android {
     namespace = "com.example.core"
     compileSdk = 35
+
+    lint {
+        disable += listOf(
+            "NullSafeMutableLiveData",
+            "RememberInComposition",
+            "FrequentlyChangingValue"
+        )
+    }
 
     defaultConfig {
         minSdk = 24

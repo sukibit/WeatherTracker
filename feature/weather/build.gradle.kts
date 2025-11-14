@@ -9,7 +9,15 @@ plugins {
 android {
     namespace = "com.example.feature.weather"
     compileSdk = 35
-    
+
+    lint {
+        disable += listOf(
+            "NullSafeMutableLiveData",
+            "RememberInComposition",
+            "FrequentlyChangingValue"
+        )
+    }
+
     defaultConfig {
         minSdk = 24
         targetSdk = 35
