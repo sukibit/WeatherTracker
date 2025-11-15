@@ -10,20 +10,13 @@ android {
     namespace = "com.example.weathertracker"
     compileSdk = 35
 
-    lint {
-        disable += listOf(
-            "NullSafeMutableLiveData",
-            "RememberInComposition",
-            "FrequentlyChangingValue"
-        )
-    }
-
     defaultConfig {
         applicationId = "com.example.weathertracker"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+
         testApplicationId = "com.example.weathertracker.test"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,41 +31,64 @@ android {
             buildConfigField("String", "OPENWEATHER_API_KEY", "\"\"")
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         buildConfig = true
         compose = true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.0"
+    }
+
+    lint {
+        disable += listOf(
+            "NullSafeMutableLiveData",
+            "RememberInComposition",
+            "FrequentlyChangingValue"
+        )
     }
 }
 
 dependencies {
+    // Modules
     implementation(project(":core"))
     implementation(project(":feature:weather"))
+
+    // Android & Lifecycle
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+
+    // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
+
+    // DI
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    // Debug
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
