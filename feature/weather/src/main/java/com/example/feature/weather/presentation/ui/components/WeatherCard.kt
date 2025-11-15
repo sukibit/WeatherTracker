@@ -1,7 +1,6 @@
 package com.example.feature.weather.presentation.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -31,7 +31,8 @@ import com.example.feature.weather.presentation.model.WeatherUi
 
 @Composable
 fun WeatherCard(
-    weather: WeatherUi, onClick: () -> Unit,
+    weather: WeatherUi,
+    onClick: () -> Unit,
     iconContent: @Composable () -> Unit = {
         if (weather.iconUrl.isNotEmpty()) {
             AsyncImage(
@@ -43,31 +44,31 @@ fun WeatherCard(
         }
     }
 ) {
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .clip(RoundedCornerShape(Dimens.RadiusMedium))
-        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
-        .border(
-            width = Dimens.BorderThin,
-            color = MaterialTheme.colorScheme.surfaceVariant,
-            shape = RoundedCornerShape(Dimens.RadiusMedium)
-        )
-        .pointerInput(Unit) {
-            detectTapGestures(onTap = { onClick() })
-        }
-        .padding(Dimens.PaddingMedium)) {
-
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(
+                elevation = Dimens.ElevationSmall,
+                shape = RoundedCornerShape(Dimens.RadiusMedium),
+                clip = false
+            )
+            .clip(RoundedCornerShape(Dimens.RadiusMedium))
+            .background(MaterialTheme.colorScheme.surface)
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = { onClick() })
+            }
+            .padding(Dimens.PaddingMedium)
+    ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-
             Text(
                 text = weather.date,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.weight(1f)
             )
 
@@ -81,13 +82,12 @@ fun WeatherCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = weather.tempDay,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Spacer(modifier = Modifier.height(Dimens.SpaceXSmall))
@@ -95,21 +95,21 @@ fun WeatherCard(
                 Text(
                     text = weather.description,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
             }
 
             Spacer(modifier = Modifier.width(Dimens.SpaceSmall))
-
             Column(
                 horizontalAlignment = Alignment.End
             ) {
                 Text(
                     text = "${stringResource(R.string.temperature_min_label)}: ${weather.tempMin}",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontWeight = FontWeight.Medium
                 )
 
                 Spacer(modifier = Modifier.height(Dimens.SpaceXXSmall))
@@ -117,22 +117,22 @@ fun WeatherCard(
                 Text(
                     text = "${stringResource(R.string.temperature_max_label)}: ${weather.tempMax}",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontWeight = FontWeight.Medium
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(Dimens.SpaceSmall))
-
+        Spacer(modifier = Modifier.height(Dimens.SpaceMedium))
         Row(
-            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(Dimens.SpaceSmall)
         ) {
             WeatherInfoChip(
                 label = stringResource(R.string.humidity_label),
                 value = weather.humidity,
                 modifier = Modifier.weight(1f)
             )
-            Spacer(modifier = Modifier.width(Dimens.SpaceSmall))
             WeatherInfoChip(
                 label = stringResource(R.string.wind_label),
                 value = weather.windSpeed,
@@ -144,19 +144,23 @@ fun WeatherCard(
 
 @Composable
 private fun WeatherInfoChip(
-    label: String, value: String, modifier: Modifier = Modifier
+    label: String,
+    value: String,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(Dimens.RadiusSmall))
-            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.5f))
-            .padding(Dimens.PaddingXSmall), horizontalAlignment = Alignment.CenterHorizontally
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f))
+            .padding(Dimens.PaddingSmall),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontWeight = FontWeight.Medium
         )
 
         Spacer(modifier = Modifier.height(Dimens.SpaceXSmall))
@@ -164,8 +168,8 @@ private fun WeatherInfoChip(
         Text(
             text = value,
             style = MaterialTheme.typography.bodySmall,
-            fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colorScheme.onBackground
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }

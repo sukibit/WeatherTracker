@@ -4,7 +4,7 @@
 
     <!-- Weather List Screen -->
     <string name="weather_forecast_title">Pronóstico del Tiempo - Madrid</string>
-    <string name="no_weather_data">No hay datos de weather disponibles</string>
+    <string name="no_weather_data">No hay datos disponibles</string>
 
     <!-- Weather Detail Screen -->
     <string name="weather_details_title">Detalles del Tiempo</string>

@@ -1,7 +1,6 @@
 package com.example.feature.weather.presentation.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import com.example.core.ui.Dimens
 import com.example.feature.weather.R
 
@@ -35,11 +37,10 @@ fun ErrorBannerInTopBar(
         modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.errorContainer)
-            .border(
-                width = Dimens.BorderThin,
-                color = MaterialTheme.colorScheme.error
-            )
             .padding(Dimens.PaddingSmall)
+            .semantics {
+                contentDescription = "Error: $message"
+            }
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -48,7 +49,8 @@ fun ErrorBannerInTopBar(
         ) {
             Row(
                 modifier = Modifier.weight(1f),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
             ) {
                 Icon(
                     imageVector = Icons.Default.Warning,
@@ -56,14 +58,18 @@ fun ErrorBannerInTopBar(
                     tint = MaterialTheme.colorScheme.error,
                     modifier = Modifier.size(Dimens.IconMedium)
                 )
+
                 Spacer(modifier = Modifier.width(Dimens.SpaceSmall))
+
                 Text(
                     text = message,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
+                    fontWeight = FontWeight.Medium,
                     modifier = Modifier.weight(1f)
                 )
             }
+            Spacer(modifier = Modifier.width(Dimens.SpaceSmall))
             DismissButton(onDismiss = onDismiss)
         }
     }
@@ -74,18 +80,22 @@ private fun DismissButton(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val closeButtonDesc = stringResource(R.string.close_button_description)
     Box(
         modifier = modifier
             .size(Dimens.IconXLarge)
             .pointerInput(Unit) {
                 detectTapGestures(onTap = { onDismiss() })
+            }
+            .semantics {
+                contentDescription = closeButtonDesc
             },
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = Icons.Default.Close,
-            contentDescription = stringResource(R.string.close_button_description),
-            tint = MaterialTheme.colorScheme.error,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onErrorContainer,
             modifier = Modifier.size(Dimens.IconMedium)
         )
     }

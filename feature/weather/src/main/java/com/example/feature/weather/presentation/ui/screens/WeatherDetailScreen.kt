@@ -1,7 +1,6 @@
 package com.example.feature.weather.presentation.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +28,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -108,7 +108,8 @@ fun WeatherDetailContent(
 
 @Composable
 fun WeatherDetailBody(
-    weather: WeatherUi, iconContent: @Composable () -> Unit = {
+    weather: WeatherUi,
+    iconContent: @Composable () -> Unit = {
         AsyncImage(
             model = weather.iconUrl,
             contentDescription = stringResource(R.string.weather_icon_description),
@@ -125,14 +126,16 @@ fun WeatherDetailBody(
     ) {
         Text(
             text = weather.date,
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
         )
+
         WeatherIconCard(weather = weather, iconContent = iconContent)
 
         DetailCard(
-            title = stringResource(R.string.temperature_section_title), items = listOf(
+            title = stringResource(R.string.temperature_section_title),
+            items = listOf(
                 stringResource(R.string.temperature_day_label) to weather.tempDay,
                 stringResource(R.string.temperature_min_label) to weather.tempMin,
                 stringResource(R.string.temperature_max_label) to weather.tempMax
@@ -140,11 +143,14 @@ fun WeatherDetailBody(
         )
 
         DetailCard(
-            title = stringResource(R.string.conditions_section_title), items = listOf(
+            title = stringResource(R.string.conditions_section_title),
+            items = listOf(
                 stringResource(R.string.humidity_label) to weather.humidity,
                 stringResource(R.string.wind_label) to weather.windSpeed
             )
         )
+
+        Spacer(modifier = Modifier.height(Dimens.SpaceSmall))
     }
 }
 
@@ -165,19 +171,17 @@ fun WeatherIconCard(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(Dimens.RadiusLarge))
-            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
-            .border(
-                width = Dimens.BorderThin,
-                color = MaterialTheme.colorScheme.surfaceVariant,
-                shape = RoundedCornerShape(Dimens.RadiusLarge)
+            .shadow(
+                elevation = Dimens.ElevationMedium,
+                shape = RoundedCornerShape(Dimens.RadiusLarge),
+                clip = false
             )
+            .clip(RoundedCornerShape(Dimens.RadiusLarge))
+            .background(MaterialTheme.colorScheme.surface)
             .padding(Dimens.PaddingXLarge)
     ) {
         iconContent()
-
         Spacer(modifier = Modifier.height(Dimens.SpaceMedium))
-
         Text(
             text = weather.tempDay,
             style = MaterialTheme.typography.displaySmall,
@@ -190,11 +194,13 @@ fun WeatherIconCard(
         Text(
             text = weather.description,
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Medium
         )
     }
 }
+
 
 @Composable
 fun EmptyStateWeatherDetailView() {
