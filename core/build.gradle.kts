@@ -1,4 +1,3 @@
-import groovy.lang.ExpandoMetaClassCreationHandle.disable
 import java.util.Properties
 
 plugins {
@@ -36,26 +35,38 @@ android {
             buildConfigField(
                 "String",
                 "OPENWEATHER_API_KEY",
-                "\"${localProperties.getProperty("openweather_api_key", "")}\""
+                "\"${localProperties.getProperty("OPENWEATHER_API_KEY", "")}\""
             )
         }
         release {
+            val localProperties = Properties()
+            val localPropertiesFile = rootProject.file("local.properties")
+            if (localPropertiesFile.exists()) {
+                localProperties.load(localPropertiesFile.inputStream())
+            }
+            buildConfigField(
+                "String",
+                "OPENWEATHER_API_KEY",
+                "\"${localProperties.getProperty("OPENWEATHER_API_KEY", "")}\""
+            )
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "OPENWEATHER_API_KEY", "\"\"")
-        }
-        buildFeatures {
-            buildConfig = true
-            compose = true
         }
     }
+
+    buildFeatures {
+        buildConfig = true
+        compose = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
